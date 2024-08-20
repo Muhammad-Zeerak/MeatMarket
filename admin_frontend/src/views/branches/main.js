@@ -64,6 +64,7 @@ const RestaurantMain = ({ next, action_type = '', user }) => {
       delivery_time: 0,
       type: 'shop',
       'fixed_amount': values.fixed_amount,
+      'max_cap_free_delivery': values.max_cap_free_delivery,
     };
     if (action_type === 'edit') {
       restaurantUpdate(values, body);

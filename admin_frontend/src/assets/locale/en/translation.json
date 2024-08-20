@@ -515,6 +515,7 @@
   "expired.at": "Expired at",
   "fix": "Fix",
   "fixed.amount": "Fixed amount",
+  "max_cap_free_delivery": "Max Price for Free Delivery",
   "percent": "Percent",
   "start.date": "Start date",
   "end.date": "End date",

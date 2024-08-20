@@ -67,6 +67,8 @@ const RestaurantEdit = () => {
             value: item.id,
             key: item.id,
           })),
+          fixed_amount: parseFloat(res.data.fixed_amount),
+          max_cap_free_delivery: parseFloat(res.data.max_cap_free_delivery),
         };
         dispatch(setMenuData({ activeMenu, data }));
       })

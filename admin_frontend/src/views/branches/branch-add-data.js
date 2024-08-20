@@ -302,6 +302,24 @@ const RestaurantAddData = ({
                 <InputNumber className='w-100' />
               </Form.Item>
             </Col>
+
+            <Col span={12}>
+              <Form.Item
+                name='max_cap_free_delivery'
+                label={t('max_cap_free_delivery')}
+                rules={[
+                  { required: true, message: t('required') },
+                  {
+                    type: 'number',
+                    min: 0,
+                    message: t('must.be.at.least.0'),
+                  },
+                ]}
+              >
+                <InputNumber className='w-100' />
+              </Form.Item>
+            </Col>
+
           </Row>
         </Card>
       </Col>
