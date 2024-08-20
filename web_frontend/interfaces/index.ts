@@ -259,6 +259,7 @@ export interface Order {
   coupon?: OrderCoupon;
   review?: OrderReview;
   redeemPoints?: number;
+  fixed_amount?: number;
 }
 
 export interface OrderReview {

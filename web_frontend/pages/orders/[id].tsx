@@ -35,6 +35,9 @@ export default function OrderSingle({}: Props) {
       staleTime: 0,
       onSuccess: (data) => {
         // console.log("ordddd", data);
+        if (data.data.fixed_amount && typeof data.data.fixed_amount === 'string') {
+          data.data.fixed_amount = parseFloat(data.data.fixed_amount);
+        }
         if (!data.data.review && data.data.status === "delivered") {
           handleOpen();
         }

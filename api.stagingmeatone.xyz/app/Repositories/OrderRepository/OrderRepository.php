@@ -385,7 +385,8 @@ class OrderRepository extends CoreRepository implements OrderRepoInterface
                 'km'                => $km,
                 'coupon'            => $coupon,
                 'service_fee'       => $serviceFee,
-                'redeemPoints'     => data_get($filter, 'redeemPoints', 0), // Add redeem points
+                'redeemPoints'      => data_get($filter, 'redeemPoints', 0), // Add redeem points
+                'fixed_amount'      => $shop->fixed_amount,
             ]
         ];
     }

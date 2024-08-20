@@ -6,6 +6,7 @@ use App\Helpers\Utility;
 use App\Http\Resources\Booking\TableResource;
 use App\Http\Resources\Booking\UserBookingResource;
 use App\Models\Order;
+use App\Models\Shop;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -51,11 +52,15 @@ class OrderResource extends JsonResource
 
         }
 
+        $temp = Shop::find(data_get($order->shop, 'id'));
+
+        $fixed_amount  = data_get($temp, 'fixed_amount', 0);
+
         return [
             'id'                            => $this->when($this->id, $this->id),
             'user_id'                       => $this->when($this->user_id, $this->user_id),
             'total_price'                   => $this->when($this->rate_total_price, $this->rate_total_price),
-            'origin_price'                  => $this->when($this->rate_total_price, $this->rate_total_price + $this->rate_total_discount - $this->rate_tax - $this->rate_delivery_fee + $couponPrice),
+            'origin_price'                  => $this->when($this->rate_total_price, $this->rate_total_price + $this->rate_total_discount - $this->rate_tax - $this->rate_delivery_fee + $couponPrice - $fixed_amount),
             'rate'                          => $this->when($this->rate, $this->rate),
             'note'                          => $this->when(isset($this->note), (string) $this->note),
             'order_details_count'           => $this->when($this->order_details_count, (int) $this->order_details_count),
@@ -89,6 +94,7 @@ class OrderResource extends JsonResource
             'created_at'                    => $this->when($this->created_at, $this->created_at?->format('Y-m-d H:i:s') . 'Z'),
             'updated_at'                    => $this->when($this->updated_at, $this->updated_at?->format('Y-m-d H:i:s') . 'Z'),
             'km'                            => $this->when($location, $location),
+            'fixed_amount'                  => $fixed_amount,
 
             'deliveryman'                   => UserResource::make($this->whenLoaded('deliveryMan')),
             'waiter'                        => UserResource::make($this->whenLoaded('waiter')),

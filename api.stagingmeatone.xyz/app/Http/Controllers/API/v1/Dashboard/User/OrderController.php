@@ -62,7 +62,7 @@ class OrderController extends UserBaseController
      */
     public function store(UserStoreRequest $request): JsonResponse
     {
-        \Log::info('Store request:', ['order' => $request]);
+//        \Log::info('Store request:', ['order' => $request]);
         $validated = $request->validated();
 
         if ((int)data_get(Settings::adminSettings()->where('key', 'order_auto_approved')->first(), 'value') === 1) {

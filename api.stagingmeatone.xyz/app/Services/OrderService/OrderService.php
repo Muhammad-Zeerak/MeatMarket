@@ -134,6 +134,7 @@ class OrderService extends CoreService implements OrderServiceInterface
                 $to         = date('H:i', strtotime(str_replace('-', ':', $workingDay?->to)));
 
                 if (!$shop->open || $isClosed || ($time < $from || $time > $to)) {
+//                if (!$shop->open || $isClosed || ($time < $from)) {
                     return [
                         'status'  => false,
                         'message' => __('errors.' . ResponseError::ERROR_118, locale: $this->language),
@@ -342,6 +343,7 @@ class OrderService extends CoreService implements OrderServiceInterface
             'waiter_fee'        => $waiterFeeRate,
             'tips'              => $tipsRate,
             'redeemPoints'     => $redeemPoints,
+            'fixed_amount'     => $shop->fixed_amount,
         ]);
 
         if (data_get($data, 'table_id')) {
@@ -802,6 +804,8 @@ class OrderService extends CoreService implements OrderServiceInterface
         $serviceFee  = (double)Settings::adminSettings()->where('key', 'service_fee')->first()?->value;
         $serviceFee  = $serviceFee ?: 0;
 
+        $fixed_amount = $shop->fixed_amount;
+
         return [
             'user_id'           => data_get($data, 'user_id', auth('sanctum')->id()),
             'waiter_id'         => data_get($data, 'waiter_id'),
@@ -831,6 +835,7 @@ class OrderService extends CoreService implements OrderServiceInterface
             'delivery_time'     => data_get($data, 'delivery_time'),
             'total_discount'    => 0,
             'redeemPoints'      => data_get($data, 'redeemPoints', 0), // Add redeemPoints here
+            'fixed_amount'      => $fixed_amount,
         ];
     }
 

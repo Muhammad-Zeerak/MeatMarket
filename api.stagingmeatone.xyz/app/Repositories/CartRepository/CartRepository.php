@@ -12,6 +12,7 @@ use App\Models\Currency;
 use App\Models\Language;
 use App\Models\Order;
 use App\Models\Settings;
+use App\Models\Shop;
 use App\Repositories\CoreRepository;
 use App\Services\CartService\CartService;
 use App\Traits\SetCurrency;
@@ -241,11 +242,17 @@ class CartRepository extends CoreRepository
         }
 
         $redeemPrice = 0;
-        
+
+        $temp = Shop::find(data_get($cart->shop, 'id'));
+
+        $fixed_amount  = data_get($temp, 'fixed_amount', 0);
+
         if(data_get($data, 'redeemPoints')) {
             $redeemPrice = (int)data_get($data, 'redeemPoints') / 100;
             $totalPrice -= $redeemPrice;
         }
+
+        $totalPrice += $fixed_amount;
 
         return [
             'status' => true,
@@ -265,6 +272,7 @@ class CartRepository extends CoreRepository
                 'redeem_price'      => $redeemPrice,
                 'receipt_discount'  => $receiptDiscount,
                 'receipt_count'     => request('receipt_count'),
+                'fixed_amount'      => $fixed_amount
             ],
         ];
     }

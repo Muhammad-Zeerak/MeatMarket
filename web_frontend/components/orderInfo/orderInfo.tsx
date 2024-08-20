@@ -222,6 +222,17 @@ export default function OrderInfo({ data }: Props) {
             />
           </span>
         </div>
+
+        <div className={cls.flex}>
+          <label>{"Fixed amount"}</label>
+          <span className={cls.price}>
+            <Price
+              number={data?.fixed_amount}
+              symbol={data?.currency?.symbol}
+            />
+          </span>
+        </div>
+
         {!!data?.coupon && (
           <div className={cls.flex}>
             <label>{t("promo.code")}</label>

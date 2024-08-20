@@ -45,7 +45,8 @@ type OrderType = {
   total_price?: number;
   total_shop_tax?: number;
   total_tax?: number;
-  redeem_price?:number;
+  redeem_price?: number;
+  fixed_amount?: number;
 };
 
 export default function CheckoutPayment({
@@ -90,11 +91,18 @@ export default function CheckoutPayment({
     ["calculate", payload, cart],
     () => orderService.calculate(cart.id, payload),
     {
-      onSuccess: (data) => setOrder(data.data),
+      onSuccess: (data) => {
+        if (data.data.fixed_amount && typeof data.data.fixed_amount === 'string') {
+          data.data.fixed_amount = parseFloat(data.data.fixed_amount);
+        }
+        setOrder(data.data);
+      },
       staleTime: 0,
       enabled: !!cart.id,
-    },
+    }
   );
+  
+  
 
   function handleOrderCreate() {
     const localShopMinPrice =
@@ -206,6 +214,12 @@ export default function CheckoutPayment({
             <div className={cls.item}>{t("discount")}</div>
             <div className={cls.item}>
               <Price number={order.total_discount} minus />
+            </div>
+          </div>
+          <div className={cls.row}>
+            <div className={cls.item}>{"Fixed Amount"}</div>
+            <div className={cls.item}>
+              <Price number={order.fixed_amount} />
             </div>
           </div>
           {coupon ? (
