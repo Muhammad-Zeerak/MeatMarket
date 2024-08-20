@@ -47,6 +47,7 @@ type OrderType = {
   total_tax?: number;
   redeem_price?: number;
   fixed_amount?: number;
+  max_cap_free_delivery?:number;
 };
 
 export default function CheckoutPayment({
@@ -95,6 +96,15 @@ export default function CheckoutPayment({
         if (data.data.fixed_amount && typeof data.data.fixed_amount === 'string') {
           data.data.fixed_amount = parseFloat(data.data.fixed_amount);
         }
+        if (data.data.max_cap_free_delivery && typeof data.data.max_cap_free_delivery === 'string') {
+          data.data.max_cap_free_delivery = parseFloat(data.data.max_cap_free_delivery);
+        }
+
+        // do toastr here - if max_cap_free_delivery >= 40 then free delivery
+        if (data.data.max_cap_free_delivery >= 40) {
+          warning("Free delivery for orders over 40");
+        }
+
         setOrder(data.data);
       },
       staleTime: 0,
@@ -198,12 +208,18 @@ export default function CheckoutPayment({
               <Price number={order.price} />
             </div>
           </div>
+
           <div className={cls.row}>
             <div className={cls.item}>{t("delivery.price")}</div>
             <div className={cls.item}>
-              <Price number={order.delivery_fee} />
+              {(order?.max_cap_free_delivery ?? 0) >= 40 ? (
+                "FREE"
+              ) : (
+                <Price number={order?.delivery_fee} />
+              )}
             </div>
           </div>
+
           <div className={cls.row}>
             <div className={cls.item}>{t("shop.tax")}</div>
             <div className={cls.item}>

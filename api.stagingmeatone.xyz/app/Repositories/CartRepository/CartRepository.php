@@ -213,6 +213,10 @@ class CartRepository extends CoreRepository
 
         $rate = $currency?->rate ?? $cart->rate;
 
+        $temp = Shop::find(data_get($cart->shop, 'id'));
+        $fixed_amount  = data_get($temp, 'fixed_amount', 0);
+        $max_cap_free_delivery = data_get($temp, 'max_cap_free_delivery', 0);
+
         // recalculate shop bonus
         $receiptDiscount = (new CartService)->recalculateReceipt($cart, $inReceipts) * $rate;
 
@@ -222,8 +226,12 @@ class CartRepository extends CoreRepository
         $helper      = new Utility;
         $km          = $helper->getDistance($cart->shop->location, data_get($data, 'address', []));
 
-        $deliveryFee = data_get($data, 'type') === Order::DELIVERY ?
-            $helper->getPriceByDistance($km, $cart->shop, $rate) : 0;
+        $deliveryFee = 0;
+
+        if($cart->rate_total_price <= $max_cap_free_delivery) {
+            $deliveryFee = data_get($data, 'type') === Order::DELIVERY ?
+                $helper->getPriceByDistance($km, $cart->shop, $rate) : 0;
+        }
 
         $totalPrice  -= $discount;
 
@@ -242,10 +250,6 @@ class CartRepository extends CoreRepository
         }
 
         $redeemPrice = 0;
-
-        $temp = Shop::find(data_get($cart->shop, 'id'));
-
-        $fixed_amount  = data_get($temp, 'fixed_amount', 0);
 
         if(data_get($data, 'redeemPoints')) {
             $redeemPrice = (int)data_get($data, 'redeemPoints') / 100;
@@ -272,7 +276,8 @@ class CartRepository extends CoreRepository
                 'redeem_price'      => $redeemPrice,
                 'receipt_discount'  => $receiptDiscount,
                 'receipt_count'     => request('receipt_count'),
-                'fixed_amount'      => $fixed_amount
+                'fixed_amount'      => $fixed_amount,
+                'max_cap_free_delivery' => $max_cap_free_delivery,
             ],
         ];
     }
