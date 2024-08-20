@@ -240,7 +240,7 @@ class ShopService extends CoreService implements ShopServiceInterface
                 'longitude'     => data_get($location, 'longitude', data_get($shop?->location, 'longitude', 0)),
             ],
             'fixed_amount'      => data_get($data, 'fixed_amount', $shop?->fixed_amount ?? 0),
-            'max_free_delivery_cap' => data_get($data, 'max_free_delivery_cap', $shop?->max_free_delivery_cap ?? 0),
+            'max_cap_free_delivery' => data_get($data, 'max_cap_free_delivery', $shop?->max_cap_free_delivery ?? 0),
         ];
     }
 
