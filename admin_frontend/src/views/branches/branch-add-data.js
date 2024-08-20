@@ -367,6 +367,7 @@ const RestaurantAddData = ({
           </Row>
         </Card>
       </Col>
+
       <Col span={8}>
         <Card title={t('order.info')}>
           <Row gutter={12}>
@@ -386,6 +387,7 @@ const RestaurantAddData = ({
                 <InputNumber className='w-100' />
               </Form.Item>
             </Col>
+
             <Col span={12}>
               <Form.Item
                 label={t('tax')}
@@ -402,6 +404,7 @@ const RestaurantAddData = ({
                 <InputNumber addonAfter={'%'} className='w-100' />
               </Form.Item>
             </Col>
+
             <Col span={12}>
               <Form.Item
                 label={t('admin.comission')}
@@ -416,6 +419,23 @@ const RestaurantAddData = ({
                 ]}
               >
                 <InputNumber className='w-100' addonAfter={'%'} />
+              </Form.Item>
+            </Col>
+
+            <Col span={12}>
+              <Form.Item
+                label={t('fixed.amount')}
+                name='fixed_amount'
+                rules={[
+                  { required: true, message: t('required') },
+                  {
+                    type: 'number',
+                    min: 0,
+                    message: t('must.be.at.least.0'),
+                  },
+                ]}
+              >
+                <InputNumber className='w-100' />
               </Form.Item>
             </Col>
           </Row>

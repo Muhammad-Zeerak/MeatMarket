@@ -63,6 +63,7 @@ const RestaurantMain = ({ next, action_type = '', user }) => {
       user: undefined,
       delivery_time: 0,
       type: 'shop',
+      'fixed_amount': values.fixed_amount,
     };
     if (action_type === 'edit') {
       restaurantUpdate(values, body);
