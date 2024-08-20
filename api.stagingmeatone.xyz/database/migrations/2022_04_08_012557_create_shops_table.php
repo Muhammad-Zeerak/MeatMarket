@@ -35,6 +35,7 @@ return new class extends Migration
             $table->double('price')->default(0);
             $table->double('price_per_km')->default(0);
             $table->decimal('fixed_amount', 8, 2)->default(0);
+            $table->decimal('max_cap_free_delivery', 8, 2)->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

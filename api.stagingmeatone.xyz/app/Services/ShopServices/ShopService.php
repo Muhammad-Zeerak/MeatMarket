@@ -50,6 +50,9 @@ class ShopService extends CoreService implements ShopServiceInterface
                 // fixed amount
                 $data['fixed_amount'] = $data['fixed_amount'] ?? 0;
 
+                // max free delivery cap
+                $data['max_cap_free_delivery'] = $data['max_cap_free_delivery'] ?? 0;
+
                 /** @var Shop $shop */
                 $shop = $this->model()->create($this->setShopParams($data));
 
@@ -127,6 +130,9 @@ class ShopService extends CoreService implements ShopServiceInterface
 
             // fixed amount field
             $data['fixed_amount'] = $data['fixed_amount'] ?? $shop->fixed_amount;
+
+            // max free delivery cap
+            $data['max_cap_free_delivery'] = $data['max_cap_free_delivery'] ?? $shop->max_free_delivery_cap;
 
             $shop->update($this->setShopParams($data, $shop));
 
@@ -234,6 +240,7 @@ class ShopService extends CoreService implements ShopServiceInterface
                 'longitude'     => data_get($location, 'longitude', data_get($shop?->location, 'longitude', 0)),
             ],
             'fixed_amount'      => data_get($data, 'fixed_amount', $shop?->fixed_amount ?? 0),
+            'max_free_delivery_cap' => data_get($data, 'max_free_delivery_cap', $shop?->max_free_delivery_cap ?? 0),
         ];
     }
 
