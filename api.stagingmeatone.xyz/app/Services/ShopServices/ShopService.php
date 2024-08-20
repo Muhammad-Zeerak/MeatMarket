@@ -132,7 +132,7 @@ class ShopService extends CoreService implements ShopServiceInterface
             $data['fixed_amount'] = $data['fixed_amount'] ?? $shop->fixed_amount;
 
             // max free delivery cap
-            $data['max_cap_free_delivery'] = $data['max_cap_free_delivery'] ?? $shop->max_free_delivery_cap;
+            $data['max_cap_free_delivery'] = $data['max_cap_free_delivery'] ?? $shop->max_cap_free_delivery;
 
             $shop->update($this->setShopParams($data, $shop));
 

@@ -26,7 +26,7 @@ class ShopResource extends JsonResource
             'id'                => $this->when($this->id, $this->id),
             'uuid'              => $this->when($this->uuid, $this->uuid),
             'fixed_amount'      => $this->when($this->fixed_amount, $this->fixed_amount),
-            'max_cap_free_delivery' => $this->when($this->max_free_delivery_cap, $this->max_free_delivery_cap),
+            'max_cap_free_delivery' => $this->when($this->max_cap_free_delivery, $this->max_cap_free_delivery),
             'discounts_count'   => $this->whenLoaded('discounts', $this->discounts_count),
             'user_id'           => $this->when($this->user_id, $this->user_id),
             'parent_id'         => $this->when($this->parent_id, $this->parent_id),
