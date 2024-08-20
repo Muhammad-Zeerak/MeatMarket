@@ -44,6 +44,7 @@ class StoreRequest extends BaseRequest
             'phone'                 => 'string',
             'open'                  => 'in:0,1',
             'show_type'             => 'in:0,1',
+            'fixed_amount'          => 'required|numeric|min:0',
             'status_note'           => 'string',
             'type'                  => ['required', Rule::in(Shop::TYPES)],
             'categories.*'          => [

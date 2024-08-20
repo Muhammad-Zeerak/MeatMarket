@@ -12,6 +12,7 @@ use App\Traits\SetTranslations;
 use DB;
 use Exception;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class ShopService extends CoreService implements ShopServiceInterface
@@ -45,6 +46,9 @@ class ShopService extends CoreService implements ShopServiceInterface
 
                 /** @var Shop $parent */
                 $data['parent_id'] = $parent->id;
+
+                // fixed amount
+                $data['fixed_amount'] = $data['fixed_amount'] ?? 0;
 
                 /** @var Shop $shop */
                 $shop = $this->model()->create($this->setShopParams($data));
@@ -120,6 +124,9 @@ class ShopService extends CoreService implements ShopServiceInterface
             }
 
             $data['parent_id'] = $shop->parent_id;
+
+            // fixed amount field
+            $data['fixed_amount'] = $data['fixed_amount'] ?? $shop->fixed_amount;
 
             $shop->update($this->setShopParams($data, $shop));
 
@@ -226,6 +233,7 @@ class ShopService extends CoreService implements ShopServiceInterface
                 'latitude'      => data_get($location, 'latitude', data_get($shop?->location, 'latitude', 0)),
                 'longitude'     => data_get($location, 'longitude', data_get($shop?->location, 'longitude', 0)),
             ],
+            'fixed_amount'      => data_get($data, 'fixed_amount', $shop?->fixed_amount ?? 0),
         ];
     }
 

@@ -50,6 +50,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
  * @property int|null $service_fee
+ * @property float $fixed_amount
  * @property int|null $type
  * @property array|null $delivery_time
  * @property-read Collection|Discount[] $discounts
