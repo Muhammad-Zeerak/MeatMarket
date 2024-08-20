@@ -101,8 +101,8 @@ export default function CheckoutPayment({
         }
 
         // do toastr here - if max_cap_free_delivery >= 40 then free delivery
-        if (data.data.max_cap_free_delivery >= 40) {
-          warning("Free delivery for orders over 40");
+        if (data.data.price >= data.data.max_cap_free_delivery) {
+          warning("Free delivery for orders over " + data.data.max_cap_free_delivery);
         }
 
         setOrder(data.data);
@@ -212,7 +212,7 @@ export default function CheckoutPayment({
           <div className={cls.row}>
             <div className={cls.item}>{t("delivery.price")}</div>
             <div className={cls.item}>
-              {(order?.max_cap_free_delivery ?? 0) >= 40 ? (
+              {(order?.price ?? 0) >= (order?.max_cap_free_delivery ?? 0) ? (
                 "FREE"
               ) : (
                 <Price number={order?.delivery_fee} />
