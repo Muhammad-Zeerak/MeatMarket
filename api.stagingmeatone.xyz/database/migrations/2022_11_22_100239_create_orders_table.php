@@ -50,6 +50,7 @@ class CreateOrdersTable extends Migration
             $table->boolean('current')->default(false);
 
             $table->integer('redeemPoints')->nullable(); // added redeemPoints in order table
+            $table->decimal('fixed_amount', 8, 2)->default(0);
 
             $table->timestamps();
             $table->softDeletes();
