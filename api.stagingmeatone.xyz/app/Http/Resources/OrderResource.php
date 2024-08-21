@@ -56,11 +56,21 @@ class OrderResource extends JsonResource
 
         $fixed_amount  = data_get($temp, 'fixed_amount', 0);
 
+        $max_cap_free_delivery = data_get($temp, 'max_cap_free_delivery', 0);
+
+        $origin_price = ($this->rate_total_price + $this->rate_total_discount - $this->rate_tax - $this->rate_delivery_fee + $couponPrice);
+        $total_price = $this->rate_total_price + $fixed_amount;
+
+        if($origin_price >= $max_cap_free_delivery) {
+            $total_price -= $this->rate_delivery_fee;
+            $this->rate_delivery_fee = 0;
+        }
+
         return [
             'id'                            => $this->when($this->id, $this->id),
             'user_id'                       => $this->when($this->user_id, $this->user_id),
-            'total_price'                   => $this->when($this->rate_total_price, $this->rate_total_price),
-            'origin_price'                  => $this->when($this->rate_total_price, $this->rate_total_price + $this->rate_total_discount - $this->rate_tax - $this->rate_delivery_fee + $couponPrice - $fixed_amount),
+            'total_price'                   => $this->when($this->rate_total_price, $total_price),
+            'origin_price'                  => $this->when($this->rate_total_price, $origin_price),
             'rate'                          => $this->when($this->rate, $this->rate),
             'note'                          => $this->when(isset($this->note), (string) $this->note),
             'order_details_count'           => $this->when($this->order_details_count, (int) $this->order_details_count),
@@ -95,6 +105,7 @@ class OrderResource extends JsonResource
             'updated_at'                    => $this->when($this->updated_at, $this->updated_at?->format('Y-m-d H:i:s') . 'Z'),
             'km'                            => $this->when($location, $location),
             'fixed_amount'                  => $fixed_amount,
+            'max_cap_free_delivery'         => $max_cap_free_delivery,
 
             'deliveryman'                   => UserResource::make($this->whenLoaded('deliveryMan')),
             'waiter'                        => UserResource::make($this->whenLoaded('waiter')),
