@@ -12,6 +12,7 @@ import {
 import storage from 'redux-persist/lib/storage';
 
 import rootReducer from './rootReducer';
+import notificationMiddleware from 'middleware/notificationMiddleware';
 
 const authPersistConfig = {
   key: 'auth',
@@ -57,7 +58,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).concat(notificationMiddleware),
 });
 
 export const persistor = persistStore(store);

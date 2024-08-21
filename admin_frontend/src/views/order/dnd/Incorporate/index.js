@@ -150,6 +150,16 @@ const Incorporate = ({
     fetchOrders({ status: item });
   };
 
+  // Call reloadOrder with 'new' every 3 seconds
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      reloadOrder('new');
+    }, 3000);
+
+    // clear interval when component unmounts
+    return () => clearInterval(intervalId);
+  }, []);
+
   return (
     <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
       <div className='order-board'>
