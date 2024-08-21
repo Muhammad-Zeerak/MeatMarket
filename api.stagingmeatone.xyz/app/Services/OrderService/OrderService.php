@@ -284,6 +284,12 @@ class OrderService extends CoreService implements OrderServiceInterface
 
         $shopTax = max($totalPrice / 100 * $shop?->tax, 0);
 
+        $max_cap_free_delivery = $shop->max_cap_free_delivery;
+
+        if($totalPrice >= $max_cap_free_delivery) {
+            $order->delivery_fee = 0;
+        }
+
         $totalPrice += ($order->delivery_fee + $shopTax + $totalDiscount);
 
         $totalDiscount += $this->recalculateReceipt($order);
@@ -333,6 +339,8 @@ class OrderService extends CoreService implements OrderServiceInterface
         $commissionFee = !$isSubscribe ?
             max(($totalPrice / 100 * $shop?->percentage <= 0.99 ? 1 : $shop?->percentage), 0)
             : 0;
+
+        $totalPrice += $shop->fixed_amount;
 
         $order->update([
             'total_price'       => $totalPrice,

@@ -58,13 +58,8 @@ class OrderResource extends JsonResource
 
         $max_cap_free_delivery = data_get($temp, 'max_cap_free_delivery', 0);
 
-        $origin_price = ($this->rate_total_price + $this->rate_total_discount - $this->rate_tax - $this->rate_delivery_fee + $couponPrice);
-        $total_price = $this->rate_total_price + $fixed_amount;
-
-        if($origin_price >= $max_cap_free_delivery) {
-            $total_price -= $this->rate_delivery_fee;
-            $this->rate_delivery_fee = 0;
-        }
+        $origin_price = ($this->rate_total_price + $this->rate_total_discount - $this->rate_tax - $this->rate_delivery_fee + $couponPrice - $fixed_amount);
+        $total_price = $this->rate_total_price;
 
         return [
             'id'                            => $this->when($this->id, $this->id),
