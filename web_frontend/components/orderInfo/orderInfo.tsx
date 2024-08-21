@@ -196,10 +196,14 @@ export default function OrderInfo({ data }: Props) {
         <div className={cls.flex}>
           <label>{t("delivery.price")}</label>
           <span className={cls.price}>
-            <Price
-              number={data?.delivery_fee}
-              symbol={data?.currency?.symbol}
-            />
+            {data?.origin_price ?? 0 >= (data?.max_cap_free_delivery ?? 0) ? (
+              "FREE"
+            ) : (
+              <Price
+                number={data?.delivery_fee}
+                symbol={data?.currency?.symbol}
+              />
+            )}
           </span>
         </div>
         <div className={cls.flex}>

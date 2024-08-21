@@ -38,6 +38,9 @@ export default function OrderSingle({}: Props) {
         if (data.data.fixed_amount && typeof data.data.fixed_amount === 'string') {
           data.data.fixed_amount = parseFloat(data.data.fixed_amount);
         }
+        if (data.data.max_cap_free_delivery && typeof data.data.max_cap_free_delivery === 'string') {
+          data.data.max_cap_free_delivery = parseFloat(data.data.max_cap_free_delivery);
+        }
         if (!data.data.review && data.data.status === "delivered") {
           handleOpen();
         }

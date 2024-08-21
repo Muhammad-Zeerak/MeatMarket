@@ -260,6 +260,7 @@ export interface Order {
   review?: OrderReview;
   redeemPoints?: number;
   fixed_amount?: number;
+  max_cap_free_delivery?:number;
 }
 
 export interface OrderReview {
