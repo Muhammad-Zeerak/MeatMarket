@@ -21,8 +21,8 @@ export const MESSAGING_SENDER_ID = '979307356934';
 export const APP_ID = '1:979307356934:web:b0ed99c263e8a36f9ab487';
 export const MEASUREMENT_ID = 'G-5W3ZFKW5N5';
 
-// export const RECAPTCHASITEKEY = '6Ldt6fYpAAAAAJFboVFkeXnq5R7-lQIiV8yVcq5L'; // for site
-export const RECAPTCHASITEKEY = '6LesdI0mAAAAAOsL4S5ZsqGmaW5VTw6z8bc7_maZ';  // for localhost testing
+export const RECAPTCHASITEKEY = '6Ldt6fYpAAAAAJFboVFkeXnq5R7-lQIiV8yVcq5L'; // for site
+// export const RECAPTCHASITEKEY = '6LesdI0mAAAAAOsL4S5ZsqGmaW5VTw6z8bc7_maZ';  // for localhost testing
 
 export const DEMO_SELLER = 107; // seller_id
 export const DEMO_SHOP = 501; // seller_id
