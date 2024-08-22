@@ -704,5 +704,6 @@
   "tables.and.qrcode": "Tables & QR-code",
 
   "max.2.mb": "Image size must be smaller than 2MB",
-  "accept.image.only": "Upload only image file"
+  "accept.image.only": "Upload only image file",
+  "tap": "Tap"
 }

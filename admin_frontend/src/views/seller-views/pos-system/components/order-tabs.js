@@ -19,7 +19,6 @@ import {
   setCurrency,
   setCurrentBag,
 } from '../../../../redux/slices/cart';
-import { AsyncSelect } from '../../../../components/async-select';
 import { getCartData } from '../../../../redux/selectors/cartSelector';
 import UserAddModal from './user-add-modal';
 import restPaymentService from '../../../../services/rest/payment';
@@ -34,13 +33,8 @@ export default function OrderTabs() {
     (state) => state.currency,
     shallowEqual,
   );
-  const { myShop: shop } = useSelector((state) => state.myShop, shallowEqual);
   const { currentBag, bags, currency } = useSelector(
     (state) => state.cart,
-    shallowEqual,
-  );
-  const { payment_type } = useSelector(
-    (state) => state.globalSettings.settings,
     shallowEqual,
   );
 
@@ -152,25 +146,13 @@ export default function OrderTabs() {
   }, [currentBag, data]);
 
   async function fetchPaymentList() {
-    return restPaymentService.getAll().then(({ data }) =>
-      data
-        .filter((el) => el.tag === 'cash' || el.tag === 'wallet')
+    return restPaymentService.getAll().then((res) =>
+      res?.data
+        ?.filter((el) => el?.tag === 'cash' || el?.tag === 'wallet' || el?.tag === 'tap')
         .map((item) => ({
-          label: item.tag || 'no name',
-          value: item.id,
-          key: item.id,
-        })),
-    );
-  }
-
-  async function fetchSellerPaymentList() {
-    return await restPaymentService.getById(shop.id).then(({ data }) =>
-      data
-        .filter((el) => el.tag !== 'cash' || el.tag !== 'wallet')
-        .map((item) => ({
-          label: item.payment.tag || 'no name',
-          value: item.payment.id,
-          key: item.payment.id,
+          label: t(item?.tag || 'N/A'),
+          value: item?.tag,
+          key: item?.id,
         })),
     );
   }
@@ -287,13 +269,8 @@ export default function OrderTabs() {
                 name='payment_type'
                 rules={[{ required: true, message: t('required') }]}
               >
-                <AsyncSelect
-                  fetchOptions={
-                    payment_type === 'admin'
-                      ? fetchPaymentList
-                      : fetchSellerPaymentList
-                  }
-                  className='w-100'
+                <DebounceSelect
+                  fetchOptions={fetchPaymentList}
                   placeholder={t('select.payment.type')}
                   onSelect={(paymentType) => {
                     dispatch(setCartData({ paymentType, bag_id: currentBag }));

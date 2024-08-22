@@ -247,7 +247,7 @@ export default function OrderCart() {
       delivery_fee: data.delivery_fee,
       coupon: coupons[0]?.coupon,
       tax: total.order_tax,
-      payment_type: data.paymentType?.label,
+      payment_type: data?.paymentType?.value,
       delivery_date: data.delivery_date,
       delivery_address_id: data.address?.address,
       address: {
@@ -267,7 +267,7 @@ export default function OrderCart() {
     };
 
     const payment = {
-      payment_sys_id: data.paymentType.value,
+      payment_sys_id: data?.paymentType?.key,
     };
 
     orderService

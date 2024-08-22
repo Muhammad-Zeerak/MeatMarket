@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Form, Input, Row, Select, Space, Spin } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { DebounceSelect } from '../../../components/search';
+import { DebounceSelect } from 'components/search';
 import {
   CloseOutlined,
   PlusOutlined,
@@ -20,6 +20,7 @@ import {
   setCurrentBag,
 } from '../../../redux/slices/cart';
 import { getCartData } from '../../../redux/selectors/cartSelector';
+import restPaymentService from 'services/rest/payment';
 import PosUserModal from './pos-user-modal';
 import PosUserAddress from './pos-user-address';
 import DeliveryInfo from './delivery-info';
@@ -37,15 +38,10 @@ export default function OrderTabs() {
     shallowEqual,
   );
   const data = useSelector((state) => getCartData(state.cart));
-  const { payments } = useSelector((state) => state.payment, shallowEqual);
   const [users, setUsers] = useState([]);
   const [addressModal, setAddressModal] = useState(null);
   const [userModal, setUserModal] = useState(null);
   const cartData = useSelector((state) => getCartData(state.cart));
-  const { payment_type: paymentRole } = useSelector(
-    (state) => state.globalSettings.settings,
-    shallowEqual,
-  );
 
   async function getUsers(search) {
     const params = {
@@ -152,6 +148,23 @@ export default function OrderTabs() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentBag, data]);
 
+  const fetchPaymentList = (search) => {
+    const params = {
+      search: search?.length ? search : undefined,
+      perPage: 20,
+      page: 1,
+    };
+    return restPaymentService.getAll(params).then((res) =>
+      res?.data
+        .filter((el) => el.tag === 'cash' || el.tag === 'wallet' || el.tag === 'tap')
+        .map((item) => ({
+          label: t(item.tag) || t('N/A'),
+          value: item?.tag,
+          key: item?.id,
+        })),
+    );
+  };
+
   return (
     <div className='order-tabs'>
       <div className='tabs-container'>
@@ -165,7 +178,7 @@ export default function OrderTabs() {
               <Space>
                 <ShoppingCartOutlined />
                 <span>
-                  {t('bag')} - {item}
+                  {t('bag')} - {item + 1}
                 </span>
                 {item && item === currentBag ? (
                   <CloseOutlined
@@ -270,6 +283,20 @@ export default function OrderTabs() {
             <Col span={12}>
               <Form.Item
                 name='payment_type'
+                rules={[{ required: true, message: t('required') }]}
+              >
+                <DebounceSelect
+                  placeholder={t('select.payment.type')}
+                  onChange={(paymentType) =>
+                    dispatch(setCartData({ paymentType, bag_id: currentBag }))
+                  }
+                  fetchOptions={fetchPaymentList}
+                />
+              </Form.Item>
+            </Col>
+            {/* <Col span={12}>
+              <Form.Item
+                name='payment_type'
                 rules={[{ required: true, message: t('missing.payment.type') }]}
               >
                 <Select
@@ -288,7 +315,7 @@ export default function OrderTabs() {
                     ))}
                 </Select>
               </Form.Item>
-            </Col>
+            </Col> */}
           </Row>
         </Card>
         <DeliveryInfo />
