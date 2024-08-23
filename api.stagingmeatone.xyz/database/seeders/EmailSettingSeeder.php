@@ -22,7 +22,7 @@ class EmailSettingSeeder extends Seeder
                 'port'          => '465',
                 'password'      => 'password',
                 'from_to'       => 'gmail@gmail.com',
-                'from_site'     => 'foodyman.vercel.app',
+                'from_site'     => 'MeatOne',
                 'ssl'           => ['ssl' => [
                                         'verify_peer'       => false,
                                         'verify_peer_name'  => false,
@@ -36,7 +36,7 @@ class EmailSettingSeeder extends Seeder
                 'port'          => '465',
                 'password'      => 'password',
                 'from_to'       => 'yandex@yandex.ru',
-                'from_site'     => 'foodyman.vercel.app',
+                'from_site'     => 'MeatOne',
                 'ssl'           => ['ssl' => [
                         'verify_peer'       => false,
                         'verify_peer_name'  => false,
